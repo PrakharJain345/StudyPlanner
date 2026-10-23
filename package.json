@@ -1,0 +1,26 @@
+{
+  "name": "ai-study-planner",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-Powered Adaptive Study Planner Monorepo",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/api & npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspace=packages/scheduler"
+  },
+  "keywords": [
+    "study-planner",
+    "ai",
+    "scheduler",
+    "react",
+    "express"
+  ],
+  "author": "Prakhar",
+  "license": "MIT"
+}
