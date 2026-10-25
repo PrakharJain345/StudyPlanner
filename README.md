@@ -162,6 +162,62 @@ PlanMind includes pre-seeded demo data for instant evaluation without manual set
 
 ---
 
+## Production Deployment
+
+PlanMind AI supports both unified fullstack hosting (single service) and decoupled edge hosting.
+
+### Option 1: Unified Service (Render / Railway / Fly.io) — *Recommended*
+
+The Express backend automatically serves the production-compiled Vite client from `apps/web/dist`, allowing you to run the entire application on a single free or low-cost container.
+
+1. Connect your GitHub repository to [Render](https://render.com) or [Railway](https://railway.app).
+2. Configure a **Web Service**:
+   - **Environment:** `Node`
+   - **Build Command:** `npm install && npm run build`
+   - **Start Command:** `npm start`
+   - **Health Check Path:** `/health`
+3. Add Environment Variables:
+   - `NODE_ENV`: `production`
+   - `PORT`: `10000` (Render default) or `3001`
+   - *(Optional)* `MONGODB_URI`: Connect to MongoDB Atlas (defaults to persistent local/hybrid storage if omitted).
+
+A ready-to-use [`render.yaml`](render.yaml) blueprint is included in the root directory for automated setup.
+
+---
+
+### Option 2: Decoupled Hosting (Vercel Frontend + Render Backend)
+
+If you prefer deploying the React frontend to Vercel's global CDN:
+
+1. **Deploy Backend API:**
+   - Deploy the monorepo root to Render/Railway following Option 1.
+   - Note your live API URL (e.g., `https://planmind-api.onrender.com`).
+
+2. **Deploy Frontend on Vercel:**
+   - Import the repository into [Vercel](https://vercel.com).
+   - Set **Root Directory** to `apps/web`.
+   - Add Environment Variable:
+     - `VITE_API_URL`: `https://planmind-api.onrender.com`
+   - Client-side routing is automatically handled via [`apps/web/vercel.json`](apps/web/vercel.json).
+
+---
+
+### Option 3: Docker Container
+
+Deploy anywhere supporting OCI containers:
+
+```bash
+# Build the production image
+docker build -t planmind-ai .
+
+# Run the container
+docker run -p 3001:3001 -e NODE_ENV=production planmind-ai
+```
+
+Access the application at `http://localhost:3001`.
+
+---
+
 ## Tech Stack
 
 - **Frontend:** React 18, Vite, Tailwind CSS, Lucide Icons, Date-fns

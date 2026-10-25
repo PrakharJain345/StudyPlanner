@@ -13,7 +13,14 @@ import calendarRoutes from './routes/calendarRoutes.js';
 import { seedDemoData } from './services/seedService.js';
 import { Store } from './services/store.js';
 
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -69,6 +76,23 @@ app.post('/api/reset-demo', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// Static frontend serving in production
+const possibleDistPaths = [
+  path.resolve(__dirname, '../../../apps/web/dist'),
+  path.resolve(__dirname, '../../web/dist'),
+];
+const webDistPath = possibleDistPaths.find((p) => fs.existsSync(p));
+
+if (webDistPath) {
+  app.use(express.static(webDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path === '/health') {
+      return next();
+    }
+    res.sendFile(path.join(webDistPath, 'index.html'));
+  });
+}
 
 // Start server
 async function start() {
