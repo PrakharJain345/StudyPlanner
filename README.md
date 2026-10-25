@@ -2,6 +2,9 @@
 
 > **Adaptive College Study Planner & Deterministic Timetable Engine**
 
+🚀 **Live Application:** [https://studyplanner-ckhh.onrender.com](https://studyplanner-ckhh.onrender.com)  
+📂 **GitHub Repository:** [https://github.com/PrakharJain345/StudyPlanner](https://github.com/PrakharJain345/StudyPlanner)
+
 PlanMind AI is an intelligent study management system designed for university students, competitive exam aspirants, and software engineering candidates. 
 
 Unlike static calendar apps that break the moment a session is missed, PlanMind combines **deterministic heuristic scheduling**, **automated buffer recovery**, and **LLM curriculum synthesis** to keep study targets on track when unexpected life events occur.
@@ -132,11 +135,14 @@ npm test
 
 ---
 
-## Demo Mode
+## Live Demo & Evaluation
 
-PlanMind includes pre-seeded demo data for instant evaluation without manual setup:
+Experience the live production application without local installation:
+👉 **[Open PlanMind AI Live Demo](https://studyplanner-ckhh.onrender.com)**
 
-1. Open the application at [http://localhost:5173](http://localhost:5173).
+PlanMind includes pre-seeded demo data for instant evaluation:
+
+1. Open the live deployment at [https://studyplanner-ckhh.onrender.com](https://studyplanner-ckhh.onrender.com) (or run locally at `http://localhost:5173`).
 2. The demo automatically initializes a **Computer Science Semester** with active courses:
    - *Data Structures & Algorithms* (Exam in 21 days)
    - *Operating Systems* (Exam in 35 days)
