@@ -173,7 +173,7 @@ The Express backend automatically serves the production-compiled Vite client fro
 1. Connect your GitHub repository to [Render](https://render.com) or [Railway](https://railway.app).
 2. Configure a **Web Service**:
    - **Environment:** `Node`
-   - **Build Command:** `npm install && npm run build`
+   - **Build Command:** `npm install --include=dev && npm run build`
    - **Start Command:** `npm start`
    - **Health Check Path:** `/health`
 3. Add Environment Variables:
