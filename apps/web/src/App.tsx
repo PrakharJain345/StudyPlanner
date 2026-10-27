@@ -14,6 +14,7 @@ import {
 import { api } from './api/client';
 import { AddGoalModal } from './components/AddGoalModal';
 import { AIBreakdownModal } from './components/AIBreakdownModal';
+import { AccountProfileModal } from './components/AccountProfileModal';
 import { AppGuideModal } from './components/AppGuideModal';
 import { ArcadeHero } from './components/ArcadeHero';
 import { AssistantDrawer } from './components/AssistantDrawer';
@@ -45,6 +46,8 @@ export const App: React.FC = () => {
   const [replanLoading, setReplanLoading] = useState(false);
 
   // Modals
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [profileInitialTab, setProfileInitialTab] = useState<'profile' | 'needs' | 'auth'>('profile');
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isAddGoalModalOpen, setIsAddGoalModalOpen] = useState(false);
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false);
@@ -338,6 +341,11 @@ export const App: React.FC = () => {
         onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        user={user}
+        onOpenProfile={() => {
+          setProfileInitialTab('profile');
+          setIsProfileModalOpen(true);
+        }}
       />
 
       {/* 2. INTERACTIVE STUDY WORKSPACE */}
@@ -408,6 +416,18 @@ export const App: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-2 text-xs font-semibold">
+            {/* Quick Plan Needs Button */}
+            <button
+              onClick={() => {
+                setProfileInitialTab('needs');
+                setIsProfileModalOpen(true);
+              }}
+              className="px-3 py-1.5 rounded-xl border border-[#ded5c6] dark:border-slate-700 bg-white/70 dark:bg-slate-800 text-[#4a453b] dark:text-slate-300 hover:bg-[#ebe3d5] dark:hover:bg-slate-700 flex items-center space-x-1 transition-all shadow-sm"
+              title="Tailor study track and plan needs"
+            >
+              <span>⚙️ Plan Needs</span>
+            </button>
+
             {/* Quick Re-Plan Button */}
             <button
               onClick={() => handleTriggerReplan('manual')}
@@ -543,6 +563,16 @@ export const App: React.FC = () => {
         onClose={() => setIsAssistantOpen(false)}
         goals={goals}
         onProposalApplied={loadData}
+      />
+
+      <AccountProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        currentUser={user}
+        onUserChange={loadData}
+        initialTab={profileInitialTab}
+        streakDays={summary?.streakDays || 1}
+        totalGoals={goals.length}
       />
     </div>
   );

@@ -28,6 +28,7 @@ const UserPreferencesSchema = new Schema<UserPreferences>(
     daysOff: { type: [Number], default: [0] },
     bufferPercent: { type: Number, default: 15 },
     timezone: { type: String, default: 'UTC' },
+    studyTrack: { type: String, default: 'engineering' },
   },
   { _id: false }
 );
@@ -36,6 +37,8 @@ const UserSchema = new Schema<UserDoc>({
   email: { type: String, required: true, unique: true },
   password: { type: String },
   name: { type: String, required: true },
+  studyTrack: { type: String, default: 'engineering' },
+  avatar: { type: String },
   preferences: { type: UserPreferencesSchema, default: () => ({}) },
   createdAt: { type: String, default: () => new Date().toISOString() },
 });

@@ -58,6 +58,7 @@ app.post('/api/reset-demo', async (req, res) => {
       user = await Store.createUser({
         email: demoEmail,
         name: 'Prakhar',
+        studyTrack: 'engineering',
         preferences: {
           sessionLength: 50,
           breakLength: 10,
@@ -65,6 +66,7 @@ app.post('/api/reset-demo', async (req, res) => {
           preferredTimeOfDay: 'evening',
           daysOff: [0],
           bufferPercent: 15,
+          studyTrack: 'engineering',
           timezone: 'UTC',
         },
         createdAt: new Date().toISOString(),

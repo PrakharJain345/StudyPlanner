@@ -39,6 +39,8 @@ export const Store = {
         email: doc.email,
         name: doc.name,
         password: doc.password,
+        studyTrack: doc.studyTrack || 'engineering',
+        avatar: doc.avatar,
         preferences: doc.preferences as UserPreferences,
         createdAt: doc.createdAt,
       };
@@ -57,28 +59,62 @@ export const Store = {
         id: doc._id.toString(),
         email: doc.email,
         name: doc.name,
+        studyTrack: doc.studyTrack || 'engineering',
+        avatar: doc.avatar,
         preferences: doc.preferences as UserPreferences,
         createdAt: doc.createdAt,
       };
     }
-    return memUsers.get(id) || null;
+    const u = memUsers.get(id);
+    if (!u) return null;
+    const { password: _, ...userSafe } = u;
+    return userSafe;
   },
 
   async createUser(user: Omit<User, 'id'> & { password?: string }): Promise<User> {
     const id = `user_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const studyTrack = user.studyTrack || 'engineering';
     if (isDbConnected()) {
-      const doc = await UserModel.create({ ...user });
+      const doc = await UserModel.create({ ...user, studyTrack });
       return {
         id: doc._id.toString(),
         email: doc.email,
         name: doc.name,
+        studyTrack: doc.studyTrack || 'engineering',
+        avatar: doc.avatar,
         preferences: doc.preferences as UserPreferences,
         createdAt: doc.createdAt,
       };
     }
-    const created: User & { password?: string } = { ...user, id };
+    const created: User & { password?: string } = { ...user, id, studyTrack };
     memUsers.set(id, created);
-    return created;
+    const { password: _, ...safe } = created;
+    return safe;
+  },
+
+  async updateUserProfile(
+    userId: string,
+    updates: { name?: string; studyTrack?: string; avatar?: string }
+  ): Promise<User | null> {
+    if (isDbConnected()) {
+      const doc = await UserModel.findByIdAndUpdate(userId, updates, { new: true }).lean();
+      if (!doc) return null;
+      return {
+        id: doc._id.toString(),
+        email: doc.email,
+        name: doc.name,
+        studyTrack: doc.studyTrack || 'engineering',
+        avatar: doc.avatar,
+        preferences: doc.preferences as UserPreferences,
+        createdAt: doc.createdAt,
+      };
+    }
+    const user = memUsers.get(userId);
+    if (!user) return null;
+    const updated = { ...user, ...updates };
+    memUsers.set(userId, updated);
+    const { password: _, ...safe } = updated;
+    return safe;
   },
 
   async updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<UserPreferences> {
@@ -86,6 +122,9 @@ export const Store = {
       const doc = await UserModel.findById(userId);
       if (doc) {
         doc.preferences = { ...doc.preferences, ...preferences };
+        if (preferences.studyTrack) {
+          doc.studyTrack = preferences.studyTrack;
+        }
         await doc.save();
         return doc.preferences as UserPreferences;
       }
@@ -93,6 +132,9 @@ export const Store = {
     const user = memUsers.get(userId);
     if (user) {
       user.preferences = { ...user.preferences, ...preferences };
+      if (preferences.studyTrack) {
+        user.studyTrack = preferences.studyTrack;
+      }
       memUsers.set(userId, user);
       return user.preferences;
     }

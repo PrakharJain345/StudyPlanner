@@ -18,6 +18,16 @@ export type SessionType = z.infer<typeof SessionTypeSchema>;
 export const SessionStatusSchema = z.enum(['pending', 'done', 'partial', 'skipped']);
 export type SessionStatus = z.infer<typeof SessionStatusSchema>;
 
+export const StudyTrackSchema = z.enum([
+  'engineering',
+  'medical',
+  'business',
+  'competitive',
+  'highschool',
+  'custom',
+]);
+export type StudyTrack = z.infer<typeof StudyTrackSchema>;
+
 export const UserPreferencesSchema = z.object({
   sessionLength: z.number().min(20).max(180).default(50), // minutes
   breakLength: z.number().min(5).max(45).default(10), // minutes
@@ -26,6 +36,7 @@ export const UserPreferencesSchema = z.object({
   daysOff: z.array(z.number().min(0).max(6)).default([0]), // 0 = Sunday
   bufferPercent: z.number().min(5).max(30).default(15),
   timezone: z.string().default('UTC'),
+  studyTrack: z.string().default('engineering').optional(),
 });
 export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
 
@@ -33,6 +44,8 @@ export const UserSchema = z.object({
   id: z.string(),
   email: z.string().email(),
   name: z.string().min(1),
+  studyTrack: z.string().default('engineering').optional(),
+  avatar: z.string().optional(),
   preferences: UserPreferencesSchema,
   createdAt: z.string(),
 });

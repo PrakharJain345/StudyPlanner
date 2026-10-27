@@ -18,7 +18,9 @@ import {
   Sun,
   Target,
   Trophy,
+  User as UserIcon,
 } from 'lucide-react';
+import { User } from '@ai-study-planner/shared';
 
 interface ArcadeHeroProps {
   onSelectMode: (mode: 'schedule' | 'syllabus' | 'timer') => void;
@@ -33,6 +35,8 @@ interface ArcadeHeroProps {
   onToggleDarkMode: () => void;
   activeTab: string;
   setActiveTab: (tab: any) => void;
+  user: User | null;
+  onOpenProfile: () => void;
 }
 
 export const ArcadeHero: React.FC<ArcadeHeroProps> = ({
@@ -48,6 +52,8 @@ export const ArcadeHero: React.FC<ArcadeHeroProps> = ({
   onToggleDarkMode,
   activeTab,
   setActiveTab,
+  user,
+  onOpenProfile,
 }) => {
   return (
     <div className="w-full font-sans transition-colors duration-200">
@@ -209,6 +215,25 @@ export const ArcadeHero: React.FC<ArcadeHeroProps> = ({
 
             {/* Divider */}
             <div className="h-5 w-[1px] bg-[#ded5c6] dark:border-slate-800 mx-0.5" />
+
+            {/* User Account Profile Button */}
+            <button
+              onClick={onOpenProfile}
+              className="flex items-center space-x-2 px-2.5 py-1 rounded-xl border border-[#ded5c6] dark:border-slate-700 bg-white/80 dark:bg-slate-800 hover:bg-[#ebe3d5] dark:hover:bg-slate-700 text-[#181a1f] dark:text-white transition-all shadow-sm hover:scale-105 active:scale-95 group"
+              title="Open Account Profile & Study Plan Needs"
+            >
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#c0392b] via-indigo-600 to-[#1e5bb5] text-white flex items-center justify-center font-bold text-xs shadow-xs group-hover:scale-110 transition-transform">
+                {user?.name?.charAt(0) || <UserIcon className="w-3.5 h-3.5" />}
+              </div>
+              <div className="hidden sm:flex flex-col text-left leading-none">
+                <span className="text-[11px] font-bold text-[#181a1f] dark:text-white max-w-[85px] truncate">
+                  {user?.name || 'Sign In'}
+                </span>
+                <span className="text-[9px] text-[#716b5f] dark:text-slate-400 font-semibold capitalize mt-0.5">
+                  {user?.studyTrack ? `${user.studyTrack} Plan` : 'Profile'}
+                </span>
+              </div>
+            </button>
 
             {/* Light / Dark Mode Toggle */}
             <button

@@ -46,11 +46,18 @@ export const api = {
     return data;
   },
 
-  async register(name: string, email: string, password: string): Promise<{ user: User; token: string }> {
+  async register(params: {
+    name: string;
+    email: string;
+    password: string;
+    studyTrack?: string;
+    bootstrapTemplate?: boolean;
+    preferences?: Partial<UserPreferences>;
+  }): Promise<{ user: User; token: string }> {
     const res = await fetch(`${API_BASE}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify(params),
     });
     if (!res.ok) {
       const err = await res.json();
@@ -61,10 +68,11 @@ export const api = {
     return data;
   },
 
-  async demoLogin(): Promise<{ user: User; token: string }> {
+  async demoLogin(persona: string = 'engineering'): Promise<{ user: User; token: string }> {
     const res = await fetch(`${API_BASE}/auth/demo`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ persona }),
     });
     if (!res.ok) {
       const err = await res.json();
@@ -79,6 +87,40 @@ export const api = {
     const res = await fetch(`${API_BASE}/auth/me`, { headers: getHeaders() });
     if (!res.ok) throw new Error('Failed to fetch user');
     return res.json();
+  },
+
+  async updateProfile(data: {
+    name?: string;
+    studyTrack?: string;
+    avatar?: string;
+  }): Promise<{ user: User }> {
+    const res = await fetch(`${API_BASE}/auth/profile`, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to update profile');
+    }
+    return res.json();
+  },
+
+  async applyTrackTemplate(track: string): Promise<{ success: boolean; user: User }> {
+    const res = await fetch(`${API_BASE}/auth/apply-track-template`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ track }),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to apply track template');
+    }
+    return res.json();
+  },
+
+  logout(): void {
+    localStorage.removeItem('study_token');
   },
 
   async updatePreferences(preferences: Partial<UserPreferences>): Promise<{ preferences: UserPreferences }> {
