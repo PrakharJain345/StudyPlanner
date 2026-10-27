@@ -30,25 +30,30 @@ export function authMiddleware(req: Request, res: Response, next: () => void) {
 
 // Predefined Demo Student Personas for Instant Multi-User Testing
 const DEMO_PERSONAS: Record<string, { email: string; name: string; track: string }> = {
+  business: {
+    email: 'elon.musk@x.finance',
+    name: 'Elon Musk',
+    track: 'business',
+  },
   engineering: {
-    email: 'student.demo@studyplanner.ai',
-    name: 'Prakhar',
+    email: 'karpathy.ai@studyplanner.ai',
+    name: 'Andrej Karpathy',
     track: 'engineering',
   },
   medical: {
-    email: 'sophia.med@studyplanner.ai',
-    name: 'Dr. Sophia',
+    email: 'house.md@studyplanner.ai',
+    name: 'Dr. Gregory House',
     track: 'medical',
   },
-  business: {
-    email: 'alex.quant@studyplanner.ai',
-    name: 'Alex Vance',
-    track: 'business',
-  },
   competitive: {
-    email: 'liam.exam@studyplanner.ai',
-    name: 'Liam Chen',
+    email: 'feynman.quant@studyplanner.ai',
+    name: 'Richard Feynman',
     track: 'competitive',
+  },
+  prakhar: {
+    email: 'student.demo@studyplanner.ai',
+    name: 'Prakhar',
+    track: 'engineering',
   },
 };
 

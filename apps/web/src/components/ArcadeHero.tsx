@@ -4,6 +4,7 @@ import {
   Brain,
   Calendar,
   CheckCircle2,
+  ChevronDown,
   Clock,
   Compass,
   Download,
@@ -168,100 +169,96 @@ export const ArcadeHero: React.FC<ArcadeHeroProps> = ({
             </button>
           </nav>
 
-          {/* 3. Right Action & Status Suite */}
+          {/* 3. Right: Designer Homebar Action Suite */}
           <div className="flex items-center space-x-2 sm:space-x-2.5 shrink-0">
-            {/* Streak Counter */}
+            {/* Integrated Streak & Focus Status Pill */}
             <div
-              className={`hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold ${
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border text-xs font-semibold select-none ${
                 isDarkMode
-                  ? 'border-amber-500/30 bg-amber-500/10 text-amber-400'
-                  : 'border-amber-500/30 bg-amber-100/60 text-amber-800'
+                  ? 'border-slate-800 bg-slate-900/80 text-slate-300'
+                  : 'border-[#ded5c6] bg-[#ede5d6]/70 text-[#4a453b]'
               }`}
               title={`${streakDays} Day Study Streak`}
             >
-              <Flame className="w-3.5 h-3.5 fill-current text-amber-500 animate-pulse" />
-              <span>{streakDays}d Streak</span>
+              <div className="flex items-center space-x-1 font-bold text-amber-500 dark:text-amber-400">
+                <Flame className="w-3.5 h-3.5 fill-current animate-pulse" />
+                <span>{streakDays}d</span>
+              </div>
+              <span className="hidden xl:inline text-[#ded5c6] dark:text-slate-700">•</span>
+              <span className="hidden xl:inline text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                {user?.preferences?.maxHoursPerDay || 5}h target
+              </span>
             </div>
 
-            {/* App Guide Action */}
-            <button
-              onClick={onOpenGuide}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-indigo-500/30 bg-indigo-50/70 hover:bg-indigo-100/70 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-xs font-semibold transition-all shadow-sm hover:scale-105 active:scale-95"
-              title="Open Navigation & Workflow Guide"
-            >
-              <Compass className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-              <span>App Guide</span>
-            </button>
-
-            {/* AI Copilot Action */}
+            {/* AI Copilot Quick Command Trigger */}
             <button
               onClick={onOpenCopilot}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-all shadow-sm hover:scale-105 active:scale-95"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border border-[#ded5c6] dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:bg-[#eae1cf] dark:hover:bg-slate-800 text-[#181a1f] dark:text-slate-200 text-xs font-semibold transition-all shadow-xs group"
               title="Open AI Study Assistant"
             >
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-              <span>AI Copilot</span>
+              <Sparkles className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 group-hover:rotate-12 transition-transform" />
+              <span className="hidden sm:inline">Ask AI</span>
             </button>
 
-            {/* Primary Action: + Add Goal */}
+            {/* Primary Action Button */}
             <button
               onClick={onOpenAddGoal}
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-[#c0392b] hover:bg-[#a82d20] text-white text-xs font-bold shadow-sm transition-all hover:scale-105 active:scale-95"
-              title="Create a new study goal or course"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-[#181a1f] dark:bg-white text-white dark:text-[#0c1017] hover:bg-[#c0392b] dark:hover:bg-[#c0392b] dark:hover:text-white text-xs font-bold transition-all shadow-xs hover:scale-105 active:scale-95"
+              title="Create a new goal or course"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
               <span>Add Goal</span>
             </button>
 
-            {/* Divider */}
-            <div className="h-5 w-[1px] bg-[#ded5c6] dark:border-slate-800 mx-0.5" />
+            {/* Subtle Divider */}
+            <div className="h-4 w-[1px] bg-[#ded5c6] dark:bg-slate-800 mx-0.5" />
 
-            {/* User Account Profile Button */}
+            {/* Executive Scholar Profile Trigger */}
             <button
               onClick={onOpenProfile}
-              className="flex items-center space-x-2 px-2.5 py-1 rounded-xl border border-[#ded5c6] dark:border-slate-700 bg-white/80 dark:bg-slate-800 hover:bg-[#ebe3d5] dark:hover:bg-slate-700 text-[#181a1f] dark:text-white transition-all shadow-sm hover:scale-105 active:scale-95 group"
+              className="flex items-center space-x-2 pl-1 pr-2.5 py-1 rounded-full border border-[#ded5c6] dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:bg-[#eae1cf] dark:hover:bg-slate-800 text-[#181a1f] dark:text-white transition-all shadow-xs group"
               title="Open Account Profile & Study Plan Needs"
             >
-              <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#c0392b] via-indigo-600 to-[#1e5bb5] text-white flex items-center justify-center font-bold text-xs shadow-xs group-hover:scale-110 transition-transform">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#1e5bb5] via-indigo-600 to-[#c0392b] text-white flex items-center justify-center font-bold text-xs shadow-xs group-hover:scale-105 transition-transform">
                 {user?.name?.charAt(0) || <UserIcon className="w-3.5 h-3.5" />}
               </div>
               <div className="hidden sm:flex flex-col text-left leading-none">
-                <span className="text-[11px] font-bold text-[#181a1f] dark:text-white max-w-[85px] truncate">
+                <span className="text-xs font-bold text-[#181a1f] dark:text-white max-w-[85px] truncate">
                   {user?.name || 'Sign In'}
                 </span>
-                <span className="text-[9px] text-[#716b5f] dark:text-slate-400 font-semibold capitalize mt-0.5">
-                  {user?.studyTrack ? `${user.studyTrack} Plan` : 'Profile'}
+                <span className="text-[9px] font-mono text-[#716b5f] dark:text-slate-400 font-semibold capitalize mt-0.5">
+                  {user?.studyTrack ? `${user.studyTrack.slice(0, 8)} Track` : 'Scholar'}
                 </span>
               </div>
+              <ChevronDown className="w-3 h-3 text-slate-400 group-hover:translate-y-0.5 transition-transform" />
             </button>
 
-            {/* Light / Dark Mode Toggle */}
-            <button
-              onClick={onToggleDarkMode}
-              className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all ${
-                isDarkMode
-                  ? 'border-slate-700 bg-slate-800/80 text-amber-400 hover:bg-slate-700'
-                  : 'border-[#ded5c6] bg-[#ebe3d5]/70 text-[#464136] hover:bg-[#ded5c6]'
-              }`}
-              title={isDarkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-
-            {/* Reset Demo Data Button */}
-            <button
-              onClick={onResetDemo}
-              className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all ${
-                isDarkMode
-                  ? 'border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-                  : 'border-[#ded5c6] text-[#716b5f] hover:text-[#181a1f] hover:bg-[#eae3d5]'
-              }`}
-              title="Reset sample college semester data"
-              aria-label="Reset demo data"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
+            {/* Minimalist Utility Dock (Tour, Theme, Reset) */}
+            <div className="flex items-center rounded-full border border-[#ded5c6] dark:border-slate-800 bg-[#ede5d6]/70 dark:bg-slate-900/70 p-0.5 shadow-xs">
+              <button
+                onClick={onOpenGuide}
+                className="w-7 h-7 rounded-full flex items-center justify-center text-[#554e42] dark:text-slate-400 hover:text-[#181a1f] dark:hover:text-white hover:bg-white dark:hover:bg-slate-800 transition-all"
+                title="App Guide & Tour"
+              >
+                <Compass className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={onToggleDarkMode}
+                className="w-7 h-7 rounded-full flex items-center justify-center text-[#554e42] dark:text-slate-400 hover:text-[#181a1f] dark:hover:text-white hover:bg-white dark:hover:bg-slate-800 transition-all"
+                title={isDarkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                aria-label="Toggle theme"
+              >
+                {isDarkMode ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5" />}
+              </button>
+              <button
+                onClick={onResetDemo}
+                className="w-7 h-7 rounded-full flex items-center justify-center text-[#554e42] dark:text-slate-400 hover:text-[#c0392b] hover:bg-white dark:hover:bg-slate-800 transition-all"
+                title="Reset sample college semester data"
+                aria-label="Reset demo data"
+              >
+                <RotateCcw className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         </div>
       </header>
