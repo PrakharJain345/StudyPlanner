@@ -39,6 +39,7 @@ export const App: React.FC = () => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
 
   const [loading, setLoading] = useState(true);
+  const [takingLonger, setTakingLonger] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false); // Default to light arcade cream theme matching reference!
   const [hasReplanAlert, setHasReplanAlert] = useState(false);
   const [replanResult, setReplanResult] = useState<PlanGenerationResult | null>(null);
@@ -107,6 +108,10 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     loadData();
+    const timer = setTimeout(() => {
+      setTakingLonger(true);
+    }, 3500);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -313,14 +318,26 @@ export const App: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f5f0e8] flex flex-col items-center justify-center space-y-4">
-        <div className="font-serif font-bold text-4xl text-[#181a1f] tracking-tight animate-pulse">
+      <div className={`min-h-screen ${isDarkMode ? 'dark bg-[#080b12] text-slate-100' : 'bg-[#f5f0e8] text-[#181a1f]'} flex flex-col items-center justify-center space-y-4 px-4 text-center transition-colors duration-200`}>
+        <div className="font-serif font-bold text-4xl text-[#181a1f] dark:text-white tracking-tight animate-pulse font-space">
           PLAN<span className="italic text-[#c0392b]">MIND</span>
         </div>
-        <div className="w-10 h-10 border-4 border-[#181a1f] border-t-[#c0392b] rounded-full animate-spin"></div>
-        <p className="font-condensed font-bold text-xs tracking-widest text-[#716b5f] uppercase">
+        <div className="w-10 h-10 border-4 border-[#181a1f]/20 dark:border-slate-800 border-t-[#c0392b] rounded-full animate-spin"></div>
+        <p className="font-mono font-bold text-xs tracking-widest text-[#716b5f] dark:text-slate-400 uppercase">
           CALIBRATING ADAPTIVE TIMETABLE...
         </p>
+
+        {takingLonger && (
+          <div className="max-w-md p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-900 dark:text-amber-200 animate-fade-in space-y-1.5 shadow-sm">
+            <div className="font-bold flex items-center justify-center space-x-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping mr-1" />
+              <span>Cloud Engine Waking Up...</span>
+            </div>
+            <p className="text-[11px] text-[#554e42] dark:text-slate-300 leading-relaxed">
+              The backend engine is spinning up from idle mode (cold start takes ~30s on free tier). Your personalized study plan will appear automatically in moments!
+            </p>
+          </div>
+        )}
       </div>
     );
   }
